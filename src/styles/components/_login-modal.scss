@@ -1,0 +1,98 @@
+.modalBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(200, 200, 200);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer {
+  width: 500px;
+  height: 500px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+
+  .title {
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    h1 {
+      font-size: 5em;
+      font-weight: bold;
+    }
+  }
+
+  .body {
+    flex: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    text-align: justify;
+    flex-direction: column;
+    white-space: pre;
+    justify-items: normal;
+    font-family: Arial, Helvetica, sans-serif;
+
+    .errMessage {
+      color: red;
+      font-size: 15px;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    label {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    input {
+      padding: 5px 5px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+  }
+
+  .footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @mixin button($before-hover, $after-hover) {
+      width: 150px;
+      height: 45px;
+      margin: 10px;
+      border: none;
+      color: black;
+      border-radius: 8px;
+      font-size: 20px;
+      cursor: pointer;
+      background-color: $before-hover;
+
+      &:hover {
+        background-color: $after-hover;
+      }
+    }
+
+    .btnCancel {
+      @include button(#e7e6e6, #cccbcb)
+    }
+
+    .btnLogin {
+      @include button(#fb5231, #fc684a)
+    }
+  }
+}
