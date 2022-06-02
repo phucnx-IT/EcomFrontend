@@ -29,6 +29,7 @@ export default function Modal({ closeModal, logged }) {
             url: 'https://backendjava16.herokuapp.com/api/v1/login',
             data: loginInfo
         }).then(res => {
+            localStorage.setItem("username",loginInfo.username)
             dispatch(addToken(res.data.content))
             logged(true);
             closeModal(false)
