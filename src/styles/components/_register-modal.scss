@@ -1,4 +1,4 @@
-.loginModalBackground {
+.registerModalBackground {
   width: 100vw;
   height: 100vh;
   background-color: rgba(200, 200, 200);
@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-.loginModalContainer {
+.registerModalContainer {
   width: 500px;
   height: 500px;
   margin-top: 20px;
@@ -22,9 +22,10 @@
     display: inline-block;
     text-align: center;
     margin-top: 10px;
-    font-family: 'Times New Roman', Times, serif;
+
     h1 {
-      font-size: 3em;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 2em;
       font-weight: bold;
     }
   }
@@ -34,12 +35,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.7rem;
+    font-size: 0.8rem;
     text-align: justify;
-    flex-direction: column;
+    flex-direction: row;
     white-space: pre;
     justify-items: normal;
     font-family: Arial, Helvetica, sans-serif;
+
+    &-item{
+      margin: 0 20px;
+    }
 
     .errMessage {
       color: red;
@@ -52,7 +57,7 @@
       flex-direction: row;
       justify-content: flex-start;
       text-align: right;
-      font-size: 20px;
+      font-size: 15px;
       font-weight: bold;
     }
 
@@ -91,8 +96,13 @@
       @include button(#e7e6e6, #cccbcb)
     }
 
-    .btnLogin {
+    .btnRegister {
       @include button(#fb5231, #fc684a)
     }
   }
+}
+
+.required-field::after {
+  content: " *";
+  color: red;
 }

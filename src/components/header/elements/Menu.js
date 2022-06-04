@@ -11,7 +11,9 @@ import SearchBar from "./SearchBar";
 import { getTotalProductInCart } from "../../../common/shopUtils";
 import Container from "../../other/Container";
 import LoginModal from "../../login/LoginModal";
-import Profile from "./Profile";
+import RegisterModal from "../../login/RegisterModal";
+import ForgotPasswordModal from "../../login/ForgotPasswordModal";
+import Profile from '../elements/Profile';
 
 
 
@@ -21,9 +23,13 @@ function Menu({ containerType}) {
   const [cartSidebarOpen, setCartSidebarOpen] = useState(false);
   const [menuSidebarOpen, setMenuSidebarOpen] = useState(false);
   const [wishlistSidebarOpen, setWishlistSidebarOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+
+  const [openLoginModal, setOpenLoginModal] = useState(false);  
+  const [openRegisterModal, setOpenRegisterModal] = useState(false);  
+  const [openForgotPasswordModal, setOpenForgotPasswordModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(localStorage.getItem('token') != null);
   const userSelector = useSelector(state=>state.userReducer)
+  
   return (
     <>
       <div className="menu">
@@ -59,7 +65,7 @@ function Menu({ containerType}) {
               {userSelector.token ?
                 <Profile logged={setIsLogin}/>
                 :
-                <Button onClick={() => setOpenModal(true)}>LOGIN</Button>
+                <Button onClick={() => setOpenLoginModal(true)}>LOGIN</Button>
               }
               <div
                 className="menu-function-item"
@@ -144,7 +150,9 @@ function Menu({ containerType}) {
       >
         <MenuSidebar />
       </Drawer>
-      {openModal && <LoginModal closeModal={setOpenModal} logged={setIsLogin}/>}
+      {openLoginModal && <LoginModal closeModal={setOpenLoginModal} logged={setIsLogin} openRegister={setOpenRegisterModal} openForgotPassword={setOpenForgotPasswordModal}/>}      
+      {openRegisterModal && <RegisterModal closeModal={setOpenRegisterModal} openLogin={setOpenLoginModal}/>}      
+      {openForgotPasswordModal && <ForgotPasswordModal closeModal={setOpenForgotPasswordModal}/>}
     </>
   );
 }

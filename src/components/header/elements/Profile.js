@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import userReducer from '../../../redux/reducers/userReducer';
 import { addUser, removeUser } from '../../../redux/actions/userAction';
 
 
@@ -25,6 +26,7 @@ export default function Profile({ logged }) {
             }
         }).then(res => {
             dispatch(addUser(res.data.content))
+            console.log(selector)
         }).catch(err => {
             console.log(err)
         });

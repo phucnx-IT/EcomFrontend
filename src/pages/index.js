@@ -18,8 +18,6 @@ export default function Home({dataFetching,categoryFetching}) {
     globalState.category,
     router.query.q
   );
-  const tokenID = useSelector(state=>state.userReducer)
-  console.log("TOKEN",tokenID.token)
   return (
     <LayoutOne title="Homepage 1">
       <Banners />

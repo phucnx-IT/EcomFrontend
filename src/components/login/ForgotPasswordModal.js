@@ -1,62 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { addToken, addUser } from '../../redux/actions/userAction'
 
-export default function Modal({ closeModal, logged, openRegister, openForgotPassword }) {
-    const dispatch = useDispatch();
-    const [loginInfo, setLoginInfo] = useState({
+export default function Modal({ closeModal }) {
+    const [passwordInfo, setPasswordInfo] = useState({
         username: "",
-        password: ""
+        password: "",
+        repassword: ""
     });
     const [errMessage, setErrMessage] = useState("");
-
+    
     const setParams = (event) => {
-        let previousState = loginInfo;
-        setLoginInfo({ ...previousState, [event.target.name]: event.target.value });
+        let previousState = passwordInfo;
+        setPasswordInfo({ ...previousState, [event.target.name]: event.target.value });
     }
     const errorMessage = (errMessage != "" && <span className='errMessage'>{errMessage}</span>)
 
-    const RegisterClickHandler = () => {
-        closeModal(false);
-        openRegister(true);
-    }
-
-    const ForgotPasswordClickHandler = () => {
-        closeModal(false);
-        openForgotPassword(true);
-    }
-
-    const login = (event) => {
+    const resetPassword = (event) => {
         event.preventDefault();
-        if (loginInfo.username.length < 6) {
+        if (passwordInfo.username.length < 6) {
             return (setErrMessage("Username must be from 6 characters"))
         }
-        if (loginInfo.password.length < 6) {
+        if (passwordInfo.password.length < 6) {
             return (setErrMessage("Password must be from 6 characters"))
         }
+        if(passwordInfo.password != passwordInfo.repassword) {
+            return(setErrMessage("New Password and Confirm Password do not match"))
+        }
         axios({
-            method: 'post',
-            url: 'https://backendjava16.herokuapp.com/api/v1/login',
-            data: loginInfo
+            method: 'put',
+            url: 'https://backendjava16.herokuapp.com/api/v1/user/resetPassword',
+            data: passwordInfo
         }).then(res => {
-            localStorage.setItem("username", loginInfo.username)
-            dispatch(addToken(res.data.content))
-            logged(true);
-            closeModal(false)
-        }).catch(err => {
-            console.log(err)
+            console.log(res);
+            closeModal(false);            
+            alert("Your password have been reset!");
+        }).catch(err => {            
+            console.log(err);
             setErrMessage(err.response.data.error);
         });
-
     }
+
     useEffect(() => {
         function handlerClose(event) {
             if (event.which === 27) {
                 closeModal(false)
             }
         }
-        
+
         document.addEventListener("keyup", handlerClose);
         return () => {
             document.removeEventListener("keyup", handlerClose);
@@ -65,10 +55,10 @@ export default function Modal({ closeModal, logged, openRegister, openForgotPass
 
     return (
         <div >
-            <div className="loginModalBackground" >
-                <div className="loginModalContainer">
+            <div className="forgotPasswordModalBackground" >
+                <div className="forgotPasswordModalContainer">
                     <div className="title">
-                        <h1>Login</h1>
+                        <h1>Change Password</h1>
                     </div>
                     <form className="body">
                         <div>
@@ -76,20 +66,19 @@ export default function Modal({ closeModal, logged, openRegister, openForgotPass
                             <input type='text' name='username' id='username' onChange={setParams}></input><br />
                         </div>
                         <div>
-                            <label>Password</label>
+                            <label>New Password</label>
                             <input type='password' name='password' id='password' onChange={setParams}></input>
+                        </div>
+                        <div>
+                            <label>Confirm New Password</label>
+                            <input type='password' name='repassword' id='repassword' onChange={setParams}></input>
                         </div>
                         {errorMessage}
                         <div className="footer">
-                            <button type='submit' className="btnLogin" onClick={login}>Login</button>
+                            <button type='submit' className="btnLogin" onClick={resetPassword}>OK</button>
                             <button className="btnCancel" onClick={() => closeModal(false)}>Cancel</button>
                         </div>
                     </form>
-                    <div>
-                        <span><a onClick={ForgotPasswordClickHandler}>Forgot password ?</a></span>
-                        <br />
-                        <span>Looking to <a onClick={RegisterClickHandler}>Create an account</a> ?</span>
-                    </div>
                 </div>
             </div>
         </div>
